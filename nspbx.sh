@@ -1,7 +1,48 @@
 #!/bin/bash
 
 
-docker run --name=nspbx --net=host  --restart=always \
+
+##########################################################
+#                                                        #
+# Instala la interface de NSPBX para docker basada en    #
+# Issabel PBX                                            #
+#            											 #
+##########################################################
+
+SERVICE="nspbx"
+IMAGE="nsoporte/$SERVICE"
+
+echo -n "Deteniendo $SERVICE......................."
+docker stop $SERVICE
+echo "Ok"
+echo "Eliminando Contenedor ....................."
+docker rm $SERVICE
+echo "Ok"
+echo "Eliminando Imagenes en cache.............."
+docker rmi nsoporte/$SERVICE:latest
+echo "Ok"
+
+echo -n "Descargando Contenedor mas reciente.............."
+docker pull $IMAGE
+echo "Ok"
+
+check_files() {
+
+	if ( ! -f $1 );then
+		echo "ERROR: el archivo $1 no se encuentra en el host"
+		exit 1
+	fi
+}
+
+
+#Comprobando archivos importantes
+check_files(/etc/hostname)
+check_files(/data/etc/amportal.conf)
+check_files(/data/etc/issabelpbx.conf)
+check_files(/data/etc/issabel.conf)
+
+
+docker run --name=$SERVICE --net=host  --restart=always \
 		-v /tmp:/tmp \
 		-v /etc/hostname:/etc/hostname:ro \
 		-v /data/var/www/db:/var/www/db \
@@ -20,7 +61,7 @@ docker run --name=nspbx --net=host  --restart=always \
 		-v /data/etc/letsencrypt:/etc/letsencrypt \
 		-v /data/etc/httpd/conf:/etc/httpd/conf \
 		-v /data/etc/httpd/conf.d:/etc/httpd/conf.d \
-		--privileged -d nsoporte/nspbx
+		--privileged -d $IMAGE
 
 
 exit 0
