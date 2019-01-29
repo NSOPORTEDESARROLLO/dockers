@@ -1,11 +1,10 @@
 #!/bin/bash
 
 
-
 ##########################################################
 #                                                        #
-# Instala la interface de NSPBX para docker basada en    #
-# Issabel PBX                                            #
+# Escrito por Christopher Naranjo G. NSOPORTE            #
+#            			cnarnajo@nsoporte.com            #
 #            											 #
 ##########################################################
 
@@ -26,9 +25,9 @@ echo -n "Descargando Contenedor mas reciente.............."
 docker pull $IMAGE
 echo "Ok"
 
-check_files() {
+function check_files(){
 
-	if ( ! -f $1 );then
+	if [ ! -f $1 ];then
 		echo "ERROR: el archivo $1 no se encuentra en el host"
 		exit 1
 	fi
@@ -36,10 +35,10 @@ check_files() {
 
 
 #Comprobando archivos importantes
-check_files(/etc/hostname)
-check_files(/data/etc/amportal.conf)
-check_files(/data/etc/issabelpbx.conf)
-check_files(/data/etc/issabel.conf)
+check_files "/etc/hostname"
+check_files "/data/etc/amportal.conf"
+check_files "/data/etc/issabelpbx.conf"
+check_files "/data/etc/issabel.conf"
 
 
 docker run --name=$SERVICE --net=host  --restart=always \
