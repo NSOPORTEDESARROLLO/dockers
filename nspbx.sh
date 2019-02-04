@@ -4,8 +4,8 @@
 ##########################################################
 #                                                        #
 # Escrito por Christopher Naranjo G. NSOPORTE            #
-#            			cnarnajo@nsoporte.com            #
-#            											 #
+#            			cnarnajo@nsoporte.com    #
+#            						 #
 ##########################################################
 
 SERVICE="nspbx"
@@ -60,6 +60,7 @@ docker run --name=$SERVICE --net=host  --restart=always \
 		-v /data/etc/letsencrypt:/etc/letsencrypt \
 		-v /data/etc/httpd/conf:/etc/httpd/conf \
 		-v /data/etc/httpd/conf.d:/etc/httpd/conf.d \
+		-v /var/run/docker.sock:/var/run/docker.sock:rw \
 		--privileged -d $IMAGE
 
 
