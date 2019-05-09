@@ -52,6 +52,7 @@ function BackupData(){
 	fi
 
 
+	docker stop $NAME
 
 	if [ "$data" !=  "" ];then 
 
