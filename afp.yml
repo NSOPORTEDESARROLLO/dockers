@@ -1,0 +1,12 @@
+version: '3.0'
+
+services:
+ afp:
+  image: "kjake/netatalk:latest"
+  container_name: "afp"
+  network_mode: "host"
+  environment:
+   - "AFP_USER=user"
+   - "AFP_PASSWORD=pwd"
+  volumes:
+   - "/usr/share/webmin:/media/share"
