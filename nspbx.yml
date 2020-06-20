@@ -1,0 +1,78 @@
+version: '3.4'
+
+services:
+  mariadb:
+    image: nsoporte/mariadb:d10
+    container_name: mariadb
+    restart: always
+    network_mode: host
+    environment:
+      - MYSQL_ROOT_PASSWORD=MysQLadminTmp123.
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/data/var/lib/mysql:/var/lib/mysql"
+      - "/data/etc/mysql:/etc/mysql"
+      - "/tmp:/tmp"
+      
+  asterisk:
+    image: nsoporte/asterisk:11.25.3
+    container_name: asterisk
+    network_mode: host
+    restart: on-failure
+    privileged: true
+    environment:
+      - G729=xeon    
+    volumes:
+      - /data/etc/asterisk:/etc/asterisk
+      - /data/var/lib/asterisk:/var/lib/asterisk
+      - /data/var/spool/asterisk/monitor:/var/spool/asterisk/monitor
+      - /data/var/spool/asterisk/voicemail:/var/spool/asterisk/voicemail
+      - /data/var/run/asterisk:/var/run/asterisk
+      - /data/var/log/asterisk:/var/log/asterisk
+      - /data/etc/issabelpbx.conf:/etc/issabelpbx.conf
+      - /etc/localtime:/etc/localtime:ro 
+      - /data/var/asterisk/g729:/g729
+    depends_on:
+      - mariadb
+  
+  nspbx:
+    image: nsoporte/nspbx
+    container_name: nspbx
+    restart: on-failure
+    privileged: true
+    network_mode: host
+    volumes:
+      - /data/var/www/db:/var/www/db
+      - /data/var/log/httpd:/var/log/httpd
+      - /data/var/run/asterisk:/var/run/asterisk
+      - /data/etc/asterisk:/etc/asterisk
+      - /data/var/spool/asterisk:/var/spool/asterisk
+      - /data/var/lib/asterisk:/var/lib/asterisk
+      - /data/etc/amportal.conf:/etc/amportal.conf:rw
+      - /data/etc/issabelpbx.conf:/etc/issabelpbx.conf:rw
+      - /data/etc/issabel.conf:/etc/issabel.conf:rw
+      - /data/var/log/asterisk:/var/log/asterisk
+      - /data/var/log/issabel:/var/log/issabel
+      - /etc/localtime:/etc/localtime:rw
+      - /data/etc/letsencrypt:/etc/letsencrypt
+      - /data/etc/httpd/conf:/etc/httpd/conf
+      - /data/etc/httpd/conf.d:/etc/httpd/conf.d
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    depends_on:
+      - mariadb
+      - asterisk
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    privileged: false
+    network_mode: bridge
+    environment:
+      - PMA_HOST=172.17.0.1
+      - PMA_PORT=3306
+    ports:
+      - 8080:80
+    volumes:
+      - /etc/localtime:/etc/localtime:rw
+    depends_on:
+      - mariadb
