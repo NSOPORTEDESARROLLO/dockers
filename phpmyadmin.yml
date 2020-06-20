@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+ phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: never
+    privileged: false
+    network_mode: bridge
+    environment:
+      - PMA_HOST="172.17.0.1"               
+      - PMA_PORT="3306"
+    ports:
+      - 8080:80
+    volumes:
+      - /etc/localtime:/etc/localtime:rw
+    #depends_on:
+    #  - mariadb

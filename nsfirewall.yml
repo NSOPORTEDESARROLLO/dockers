@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+ nsfirewall:
+    image: nsoporte/nsfirewall
+    container_name: nsfirewall
+    restart: always
+    privileged: true
+    network_mode: host
+    environment:
+      - FAIL2BAN=yes
+    volumes:
+      - /etc/localtime:/etc/localtime:rw
+      - /data/etc/nsfirewall/shorewall:/etc/shorewall
+      - /data/etc/nsfirewall/fail2ban:/etc/fail2ban
+      - /data/var/lib/nsfirewall/fail2ban:/fail2ban
+      - /var/log/auth.log:/var/log/auth.log:ro
+      - /data/var/log/asterisk:/var/log/asterisk:ro
+      - /data/var/log/nsfirewall/shorewall:/var/log/shorewall
