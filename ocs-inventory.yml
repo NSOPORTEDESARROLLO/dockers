@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+ ocsinventory:
+    image: ocsinventory/ocsinventory-docker-image
+    container_name: ocsinventory
+    privileged: "true"
+    restart: "always"
+    network_mode: "host"
+    volumes:
+      - /etc/localtime:/etc/localtime:rw

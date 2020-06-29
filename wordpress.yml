@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    restart: always
+    network_mode: bridge
+    ports:
+      - 84:80
+    environment:
+      - WORDPRESS_DB_HOST=172.17.0.1
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=Amarillo99...
+      - WORDPRESS_DB_NAME=wordpress
+    volumes:
+      - /data/var/www/html:/var/www/html  
+      - /etc/localtime:/etc/localtime:rw
+  mysql:
+    image: mysql:5.7
+    restart: always
+    container_name: "mysql"
+    network_mode: "host"
+    environment:
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=Amarillo99...
+      - MYSQL_ROOT_PASSWORD=MysQLadminTmp123.
+    volumes:
+      - /data/var/lib/mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:rw
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    privileged: false
+    network_mode: bridge
+    environment:
+      - PMA_HOST="172.17.0.1"               
+      - PMA_PORT="3306"
+    ports:
+      - 8080:80
+    volumes:
+      - /etc/localtime:/etc/localtime:rw
+    depends_on:
+      - mysql
