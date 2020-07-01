@@ -1,0 +1,13 @@
+version: '3.0'
+
+services:
+ ftpserver:
+  image: "nsoporte/ftpserver"
+  container_name: "ftpserver"
+  network_mode: "host"
+  volumes:
+   - "/etc/localtime:/etc/localtime:ro"
+   - "/usr/share/webmin:/media/share"
+   - "/data/etc/ftpserver:/conf"
+   - "/data/var/log/ftpserver:/log"
+   - "/data/var/spool/asterisk/monitor:/ftp"
