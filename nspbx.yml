@@ -17,7 +17,7 @@ services:
     image: nsoporte/asterisk:11.25.3
     container_name: asterisk
     network_mode: host
-    restart: on-failure
+    restart: always
     privileged: true
     environment:
       - G729=xeon    
@@ -37,7 +37,7 @@ services:
   nspbx:
     image: nsoporte/nspbx
     container_name: nspbx
-    restart: on-failure
+    restart: always
     privileged: true
     network_mode: host
     volumes:
@@ -79,6 +79,7 @@ services:
    image: "nsoporte/ftpserver"
    container_name: "ftpserver"
    network_mode: "host"
+   restart: "always"
    volumes:
     - "/etc/localtime:/etc/localtime:ro"
     - "/usr/share/webmin:/media/share"
