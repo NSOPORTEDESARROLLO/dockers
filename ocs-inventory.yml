@@ -1,3 +1,4 @@
+#No instalar esta imagen ya que cuenta con un fallo del desarrollador 
 version: '3.4'
 
 services:

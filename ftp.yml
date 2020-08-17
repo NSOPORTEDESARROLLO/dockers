@@ -1,3 +1,4 @@
+#Instala el servidor FTP en el directorio /var/spool/asterisk/monitor
 version: '3.0'
 
 services:
