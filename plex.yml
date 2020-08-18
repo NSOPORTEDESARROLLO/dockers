@@ -6,7 +6,6 @@ services:
   image: "plexinc/pms-docker:latest"
   container_name: "plexmediaserver"
   network_mode: "host"
-  command: "plexinc/pms-docker"
   volumes:
    - "/etc/localtime:/etc/localtime:ro"
    - "/data/etc/plexmediaserver:/config"
