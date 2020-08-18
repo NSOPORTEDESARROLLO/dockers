@@ -1,0 +1,14 @@
+#Plex Media Server
+version: '3.0'
+
+services:
+ Plexmediaserver:
+  image: "plexinc/pms-docker:latest"
+  container_name: "plexmediaserver"
+  network_mode: "host"
+  command: "plexinc/pms-docker"
+  volumes:
+   - "/etc/localtime:/etc/localtime:ro"
+   - "/data/etc/plexmediaserver:/config"
+   - "/data/var/plexmediaserver/transcode:/transcode"
+   - "/var/var/plexmediaserver/media:/data"
